@@ -1,40 +1,49 @@
-package com.example.svnitapp;
+package com.example.svnitapp.fragment;
+
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.example.svnitapp.Notice;
+import com.example.svnitapp.Notice_Adapter;
+import com.example.svnitapp.R;
 
 import java.util.ArrayList;
 
-public class NoticeActivity extends AppCompatActivity {
+
+public class NoticeFragment extends Fragment {
+
+
+
+    public NoticeFragment() {
+        // Required empty public constructor
+    }
 
     RecyclerView recyclerView;
     ArrayList<Notice> noticeArrayList;
     Notice_Adapter notice_adapter;
     String [] notices;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.notice_activity);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+         View view = inflater.inflate(R.layout.fragment_notice, container, false);
 
-
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.notice_recyclerView);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager( getContext()));
         noticeArrayList = new ArrayList<>();
-        notice_adapter = new Notice_Adapter(this, noticeArrayList);
+        notice_adapter = new Notice_Adapter( getContext(), noticeArrayList);
         recyclerView.setAdapter(notice_adapter);
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -67,36 +76,6 @@ public class NoticeActivity extends AppCompatActivity {
 
         notice_adapter.notifyDataSetChanged();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
-
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.resource_menu_item:
-                                Intent intent1 = new Intent(NoticeActivity.this, ResouceActivity.class);
-                                startActivity(intent1);
-                                break;
-                            case R.id.notice_menu_item:
-                                break;
-                            case R.id.event_menu_item:
-                                Intent intent3 = new Intent(NoticeActivity.this, EventActivity.class);
-                                startActivity(intent3);
-                                break;
-                            case R.id.drawer_menu_item:
-                                break;
-                        }
-                        return false;
-                    }
-                }
-        );
+         return view;
     }
 }
